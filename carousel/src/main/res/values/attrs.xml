@@ -42,5 +42,8 @@
             <enum name="fit_center" value="2" />
             <enum name="circle_crop" value="3" />
         </attr>
+        <attr name="indicatorActiveColor" format="color" />
+        <attr name="indicatorInactiveColor" format="color" />
+
     </declare-styleable>
 </resources>

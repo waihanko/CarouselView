@@ -1,18 +1,26 @@
 package com.singlecell.carousel.ui.indicators;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.singlecell.carousel.R;
 
 public class CircleIndicator extends IndicatorShape {
-
-    public CircleIndicator(Context context, int indicatorSize, boolean mustAnimateChanges) {
+    int indicatorActiveColor = 0;
+    int indicatorInactiveColor = 0;
+    public CircleIndicator(Context context, int indicatorSize, boolean mustAnimateChanges, int indicatorActiveColor, int indicatorInactiveColor) {
         super(context, indicatorSize, mustAnimateChanges);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_unselected, null));
-        } else {
-            setBackgroundDrawable(getResources().getDrawable(R.drawable.indicator_circle_unselected));
+        this.indicatorActiveColor = indicatorActiveColor;
+        this.indicatorInactiveColor = indicatorInactiveColor;
+
+        {
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_unselected, null);
+            assert drawable != null;
+            drawable.setTint(indicatorInactiveColor);
+            setBackground(drawable);
         }
     }
 
@@ -20,16 +28,16 @@ public class CircleIndicator extends IndicatorShape {
     public void onCheckedChange(boolean isChecked) {
         super.onCheckedChange(isChecked);
         if (isChecked) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_selected, null));
-            } else {
-                setBackgroundDrawable(getResources().getDrawable(R.drawable.indicator_circle_selected));
+            {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_selected, null);
+                drawable.setTint(indicatorActiveColor);
+                setBackground(drawable);
             }
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_unselected, null));
-            } else {
-                setBackgroundDrawable(getResources().getDrawable(R.drawable.indicator_circle_unselected));
+            {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.indicator_circle_unselected, null);
+                drawable.setTint(indicatorInactiveColor);
+                setBackground(drawable);
             }
         }
     }

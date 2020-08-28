@@ -3,6 +3,7 @@ package com.singlecell.carousel.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.load.Transformation;
@@ -76,6 +78,8 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
     private int paddingBottom;
     private boolean hideIndicators = false;
     private int sliderTransformation;
+    private int indicatorActiveColor;
+    private int indicatorInactiveColor;
 
     public Slider(@NonNull Context context) {
         super(context);
@@ -115,6 +119,8 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
                     sliderTransformation = typedArray.getInt(R.styleable.BannerSlider_defaultTransform, 1);
                     slideShowInterval = slideShowIntervalSecond * 1000;
                     sliderImageViewHeight = typedArray.getDimensionPixelSize(R.styleable.BannerSlider_sliderImageHeight, getResources().getDimensionPixelSize(R.dimen.default_slider_height));
+                    indicatorActiveColor = typedArray.getColor(R.styleable.BannerSlider_indicatorActiveColor, ContextCompat.getColor(getContext(),R.color.default_indicator_color_selected));
+                    indicatorInactiveColor = typedArray.getColor(R.styleable.BannerSlider_indicatorInactiveColor, ContextCompat.getColor(getContext(),R.color.default_indicator_color_unselected));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -160,7 +166,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         else
             viewPager.setPageTransformer(false, new TransformersGroup().getTransformer(getContext(), defaultTransition));
         Transformation<Bitmap> transformation = getImageTransformation(sliderTransformation);
-        
+
         viewPager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         viewPager.addOnPageChangeListener(Slider.this);
         viewPager.setClipChildren(false);
@@ -170,7 +176,7 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         viewPager.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         addView(viewPager);
         SliderAdapter adapter = new SliderAdapter(getContext(), slideList, sliderPlaceHolderImage,
-                sliderErrorImage, sliderImageViewHeight,transformation, new AdapterView.OnItemClickListener() {
+                sliderErrorImage, sliderImageViewHeight, transformation, new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (itemClickListener != null)
@@ -181,7 +187,13 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
         slideCount = slideList.size();
         viewPager.setCurrentItem(0);
         if (!hideIndicators && slideCount > 1) {
-            slideIndicatorsGroup = new SlideIndicatorsGroup(getContext(), selectedSlideIndicator, unSelectedSlideIndicator, defaultIndicator, indicatorSize, mustAnimateIndicators);
+            slideIndicatorsGroup = new SlideIndicatorsGroup(getContext(),
+                    selectedSlideIndicator,
+                    unSelectedSlideIndicator, defaultIndicator, indicatorSize,
+                    mustAnimateIndicators,
+                    indicatorActiveColor,
+                    indicatorInactiveColor
+                    );
             addView(slideIndicatorsGroup);
             slideIndicatorsGroup.setSlides(slideCount);
             slideIndicatorsGroup.onSlideChange(0);
@@ -191,10 +203,10 @@ public class Slider extends FrameLayout implements ViewPager.OnPageChangeListene
     }
 
     private Transformation<Bitmap> getImageTransformation(int sliderTransformation) {
-        switch (sliderTransformation){
-            case 1 :
+        switch (sliderTransformation) {
+            case 1:
                 return new CenterCrop();
-            case 2 : //
+            case 2: //
                 return new FitCenter();
             default:
                 return new CircleCrop();

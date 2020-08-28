@@ -12,7 +12,7 @@
         android:layout_height="200dp"
         app:animateIndicators="true"
         app:defaultIndicators="circle"
-        app:defaultTransition="6"
+        app:defaultTransition="4"
         app:indicatorSize="8dp"
         app:intervalSecond="5"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:loopSlides="true"
         app:sliderErrorImage="@drawable/ic_launcher_background"
+        app:indicatorActiveColor = "@color/sliderActiveColor"
         app:sliderPlaceholderImage="@drawable/ic_launcher_background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
