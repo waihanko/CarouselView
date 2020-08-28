@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="default_indicator_color_selected">#eeee</color>
-    <color name="default_indicator_color_unselected">#66eeeeee</color>
+    <color name="default_indicator_color_unselected">#5F5F5F</color>
     <color name="default_ripple_color">#fafafa</color>
     <!--black transparent-->
     <color name="transparent">#00000000</color>

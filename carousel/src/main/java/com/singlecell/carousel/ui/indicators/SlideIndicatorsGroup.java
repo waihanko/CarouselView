@@ -22,10 +22,14 @@ public class SlideIndicatorsGroup extends LinearLayout implements OnSlideChangeL
     private Drawable unselectedSlideIndicator;
     private int defaultIndicator;
     private int indicatorSize;
-    private boolean mustAnimateIndicators = true;
+    private int indicatorActiveColor;
+    private int indicatorInactiveColor;
+    private boolean mustAnimateIndicators;
     private List<IndicatorShape> indicatorShapes = new ArrayList<>();
 
-    public SlideIndicatorsGroup(Context context, Drawable selectedSlideIndicator, Drawable unselectedSlideIndicator, int defaultIndicator, int indicatorSize, boolean mustAnimateIndicators) {
+    public SlideIndicatorsGroup(Context context, Drawable selectedSlideIndicator, Drawable unselectedSlideIndicator,
+                                int defaultIndicator, int indicatorSize, boolean mustAnimateIndicators,
+                                int indicatorActiveColor, int indicatorInactiveColor) {
         super(context);
         this.context = context;
         this.selectedSlideIndicator = selectedSlideIndicator;
@@ -33,6 +37,8 @@ public class SlideIndicatorsGroup extends LinearLayout implements OnSlideChangeL
         this.defaultIndicator = defaultIndicator;
         this.indicatorSize = indicatorSize;
         this.mustAnimateIndicators = mustAnimateIndicators;
+        this.indicatorActiveColor = indicatorActiveColor;
+        this.indicatorInactiveColor = indicatorInactiveColor;
         setup();
     }
 
@@ -59,25 +65,13 @@ public class SlideIndicatorsGroup extends LinearLayout implements OnSlideChangeL
                 public void onCheckedChange(boolean isChecked) {
                     super.onCheckedChange(isChecked);
                     if (isChecked) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            setBackground(selectedSlideIndicator);
-                        } else {
-                            setBackgroundDrawable(selectedSlideIndicator);
-                        }
+                        setBackground(selectedSlideIndicator);
                     } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            setBackground(unselectedSlideIndicator);
-                        } else {
-                            setBackgroundDrawable(unselectedSlideIndicator);
-                        }
+                        setBackground(unselectedSlideIndicator);
                     }
                 }
             };
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                indicatorShape.setBackground(unselectedSlideIndicator);
-            } else {
-                indicatorShape.setBackgroundDrawable(unselectedSlideIndicator);
-            }
+            indicatorShape.setBackground(unselectedSlideIndicator);
             indicatorShapes.add(indicatorShape);
             addView(indicatorShape);
 
@@ -100,7 +94,7 @@ public class SlideIndicatorsGroup extends LinearLayout implements OnSlideChangeL
                     break;
 
                 case IndicatorShape.CIRCLE:
-                    indicatorShape = new CircleIndicator(context, indicatorSize, mustAnimateIndicators);
+                    indicatorShape = new CircleIndicator(context, indicatorSize, mustAnimateIndicators, indicatorActiveColor, indicatorInactiveColor);
                     indicatorShapes.add(indicatorShape);
                     addView(indicatorShape);
                     break;
