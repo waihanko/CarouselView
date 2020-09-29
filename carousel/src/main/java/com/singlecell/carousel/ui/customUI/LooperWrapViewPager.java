@@ -95,7 +95,7 @@ public class LooperWrapViewPager extends ViewPager {
     }
 
     @Override
-    public void setOnPageChangeListener(OnPageChangeListener listener) {
+    public void addOnPageChangeListener(OnPageChangeListener listener) {
         mOuterPageChangeListener = listener;
     }
 
@@ -112,7 +112,7 @@ public class LooperWrapViewPager extends ViewPager {
     }
 
     private void init() {
-        super.setOnPageChangeListener(onPageChangeListener);
+        super.addOnPageChangeListener(onPageChangeListener);
     }
 
     private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {

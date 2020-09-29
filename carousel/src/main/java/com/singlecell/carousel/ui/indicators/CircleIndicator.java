@@ -6,7 +6,7 @@ import android.os.Build;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import com.singlecell.carousel.R;
+import com.singlecell.carousel.R; 
 
 public class CircleIndicator extends IndicatorShape {
     int indicatorActiveColor = 0;
